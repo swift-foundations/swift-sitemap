@@ -12,7 +12,7 @@ struct ReadmeVerificationTests {
         let urls = [
             Sitemap.URL(
                 location: try #require(URL(string: "https://example.com")),
-                lastModification: Date(),
+                lastModification: Date(timeIntervalSince1970: 1_700_000_000),
                 changeFrequency: .daily,
                 priority: 1.0
             ),
@@ -132,7 +132,7 @@ struct ReadmeVerificationTests {
     func sitemapURLProperties() throws {
         let url = try #require(URL(string: "https://example.com"))
         let metadata = Sitemap.URL.MetaData(
-            lastModification: Date(),
+            lastModification: Date(timeIntervalSince1970: 1_700_000_000),
             changeFrequency: .daily,
             priority: 0.8
         )
@@ -153,7 +153,7 @@ struct ReadmeVerificationTests {
 
     @Test("API Reference - MetaData properties from README lines 119-123")
     func metadataProperties() {
-        let date = Date()
+        let date = Date(timeIntervalSince1970: 1_700_000_000)
         let frequency = Sitemap.URL.ChangeFrequency.weekly
         let priority: Float = 0.7
 

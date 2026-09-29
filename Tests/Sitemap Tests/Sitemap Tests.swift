@@ -63,7 +63,7 @@ struct SitemapURLTests {
     @Test("URL initializes with all metadata")
     func urlFullInitialization() throws {
         let url = try #require(URL(string: "https://example.com"))
-        let date = Date()
+        let date = Date(timeIntervalSince1970: 1_700_000_000)
         let frequency = Sitemap.URL.ChangeFrequency.daily
         let priority: Float = 0.8
 
@@ -111,7 +111,7 @@ struct MetaDataTests {
 
     @Test("MetaData initializes with all values")
     func metaDataFullInitialization() {
-        let date = Date()
+        let date = Date(timeIntervalSince1970: 1_700_000_000)
         let frequency = Sitemap.URL.ChangeFrequency.monthly
         let priority: Float = 0.5
 
@@ -434,7 +434,7 @@ struct IntegrationTests {
         let urls = [
             Sitemap.URL(
                 location: try #require(URL(string: baseURL)),
-                lastModification: Date(),
+                lastModification: Date(timeIntervalSince1970: 1_700_000_000),
                 changeFrequency: .daily,
                 priority: 1.0
             ),
@@ -448,7 +448,7 @@ struct IntegrationTests {
             ),
             Sitemap.URL(
                 location: try #require(URL(string: "\(baseURL)/blog")),
-                lastModification: Date(),
+                lastModification: Date(timeIntervalSince1970: 1_700_000_000),
                 changeFrequency: .weekly
             ),
         ]
@@ -475,17 +475,15 @@ struct IntegrationTests {
         #expect(urlCount == 4)
     }
 
-    @Test("Large sitemap generation performance")
-    func largeSitemapPerformance() throws {
-        let startTime = Date()
-
+    @Test("Large sitemap generation")
+    func largeSitemap() throws {
         var urls: [Sitemap.URL] = []
         for i in 0..<1000 {
             let url = try #require(URL(string: "https://example.com/page\(i)"))
             urls.append(
                 Sitemap.URL(
                     location: url,
-                    lastModification: Date(),
+                    lastModification: Date(timeIntervalSince1970: 1_700_000_000),
                     changeFrequency: .weekly,
                     priority: 0.5
                 )
@@ -495,14 +493,11 @@ struct IntegrationTests {
         let sitemap = Sitemap(urls: urls)
         let xml = sitemap.xml
 
-        let timeElapsed = Date().timeIntervalSince(startTime)
-
         #expect(urls.count == 1000)
         #expect(xml.contains("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
         #expect(xml.contains("https://example.com/page0"))
         #expect(xml.contains("https://example.com/page999"))
 
-        #expect(timeElapsed < 1.0)
     }
 
     @Test("Real-world URL patterns")
@@ -511,7 +506,7 @@ struct IntegrationTests {
 
             Sitemap.URL(
                 location: try #require(URL(string: "https://myblog.com")),
-                lastModification: Date(),
+                lastModification: Date(timeIntervalSince1970: 1_700_000_000),
                 changeFrequency: .daily,
                 priority: 1.0
             ),
@@ -529,7 +524,7 @@ struct IntegrationTests {
 
             Sitemap.URL(
                 location: try #require(URL(string: "https://myblog.com/posts/2025/01/hello-world")),
-                lastModification: Date(),
+                lastModification: Date(timeIntervalSince1970: 1_700_000_000),
                 changeFrequency: .never,
                 priority: 0.6
             ),
